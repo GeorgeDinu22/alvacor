@@ -1,0 +1,310 @@
+.header{
+    --text: #fff;
+    position: fixed;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 94%;
+    height: 64px;
+    padding: 4px 8px 4px 16px;
+    border-radius: 20px;
+    color: var(--text);
+    background-color: color-mix(in srgb, var(--primary) 35%, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+@supports not (backdrop-filter: blur(12px)){
+    .header{
+        background-color: color-mix(in srgb, var(--primary) 95%, transparent);
+    }
+}
+
+.header a{
+    text-decoration: none;
+}
+
+.logo{
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navDesktop{
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+.navDesktop a{
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: clamp(15px, 1.4vw, 18px);
+    white-space: nowrap;
+    color: var(--text);
+    transition: color 200ms ease;
+}
+.navDesktop a:hover{
+    color: var(--secondary);
+}
+
+.actiuni{
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* butoane CTA: ocru cu text asfalt, ca butonul din hero */
+.call,
+.callDesktop{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: var(--radius);
+    background-color: var(--secondary);
+    color: var(--primary);
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background-color 200ms ease;
+}
+.call:hover,
+.callDesktop:hover{
+    background-color: color-mix(in srgb, var(--secondary) 85%, #fff);
+}
+
+.call{
+    height: 40px;
+    padding: 0 12px;
+    font-size: 14px;
+}
+.callText{
+    display: none;
+}
+@media (min-width: 420px){
+    .call{
+        padding-inline: 16px;
+    }
+    .callText{
+        display: inline;
+    }
+}
+
+.callDesktop{
+    display: none;
+    padding: 10px 18px;
+    font-size: clamp(15px, 1.4vw, 17px);
+}
+
+.burger{
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.burger span{
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    transition: transform 300ms ease, opacity 200ms ease;
+}
+.burgerOpen span:nth-child(1){
+    transform: translateY(8px) rotate(45deg);
+}
+.burgerOpen span:nth-child(2){
+    opacity: 0;
+}
+.burgerOpen span:nth-child(3){
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.overlay{
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+}
+.overlayOpen{
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 300ms ease, visibility 0s linear 0s;
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 70;
+    height: 100dvh;
+    width: min(300px, 80vw);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px 20px 20px;
+    color: #fff;
+    background-color: var(--primary);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    transform: translateX(-100%);
+    transition: transform 300ms ease;
+}
+.sidebarOpen{
+    transform: translateX(0);
+}
+
+.sidebarHeader{
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.close{
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 200ms ease, color 200ms ease;
+}
+.close:hover{
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--secondary);
+}
+
+.nav{
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.nav a{
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 200ms ease, color 200ms ease;
+}
+.nav a:hover{
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--secondary);
+}
+
+.sidebarFooter{
+    --wa: #25d366;
+    flex: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.sidebarFooter a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    border-radius: 10px;
+    transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.footerCall{
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+.footerCall:hover{
+    background-color: color-mix(in srgb, var(--secondary) 85%, #fff);
+}
+
+.footerWhatsapp{
+    border: 1px solid color-mix(in srgb, var(--wa) 30%, transparent);
+    background-color: color-mix(in srgb, var(--wa) 8%, transparent);
+    color: var(--wa);
+}
+.footerWhatsapp:hover{
+    border-color: color-mix(in srgb, var(--wa) 55%, transparent);
+    background-color: color-mix(in srgb, var(--wa) 15%, transparent);
+}
+
+.logo:focus-visible,
+.navDesktop a:focus-visible,
+.call:focus-visible,
+.callDesktop:focus-visible,
+.burger:focus-visible,
+.close:focus-visible,
+.nav a:focus-visible,
+.sidebarFooter a:focus-visible{
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+}
+.sidebarFooter .footerWhatsapp:focus-visible{
+    outline-color: var(--wa);
+}
+
+/* Desktop: trebuie să fie identic cu DESKTOP_QUERY din header.jsx */
+@media (min-width: 768px){
+    .header{
+        top: 12px;
+        height: 72px;
+        padding: 8px 12px 8px 24px;
+    }
+    .logo{
+        font-size: 26px;
+    }
+    .navDesktop,
+    .callDesktop{
+        display: flex;
+    }
+    .call,
+    .burger{
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .sidebar,
+    .overlay,
+    .burger span{
+        transition-duration: 1ms;
+    }
+}

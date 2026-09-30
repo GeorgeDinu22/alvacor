@@ -1,0 +1,124 @@
+.map {
+    width: 94%;
+    margin: 96px auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 32px;
+    padding: 24px 8px;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 900px) {
+    .map {
+        grid-template-columns: 2fr 3fr;
+        gap: 48px;
+    }
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    align-items: center;
+}
+
+.text h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2;
+}
+.text h2 strong {
+    color: var(--secondary);
+}
+
+.text p {
+    line-height: 1.6;
+    opacity: 0.8;
+    max-width: 400px;
+}
+
+.svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.country {
+    fill: var(--primary);
+    stroke: var(--secondary);
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+.marker {
+    fill: var(--secondary);
+    stroke: #fff;
+    stroke-width: 2.5;
+}
+
+/* inel care pulsează în jurul markerului */
+.pulse {
+    fill: var(--secondary);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); opacity: 0.6; }
+    to { transform: scale(3.2); opacity: 0; }
+}
+
+.label {
+    fill: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    paint-order: stroke;
+    stroke: var(--primary);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pulse { animation: none; opacity: 0; }
+}
+
+/* CTA sub hartă, pe toată lățimea secțiunii */
+.cta {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
+    text-align: center;
+}
+.cta p {
+    font-size: 18px;
+    font-weight: 600;
+}
+.ctaButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    background: var(--secondary);
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.25s;
+}
+.ctaButton svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+.ctaButton:hover {
+    transform: translateY(-4px);
+}

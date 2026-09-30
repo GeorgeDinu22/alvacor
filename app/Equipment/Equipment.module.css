@@ -1,0 +1,192 @@
+.equipment {
+    width: 94%;
+    margin: 96px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.equipment h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 12px;
+}
+.equipment h2 strong {
+    color: var(--secondary);
+}
+
+.intro {
+    text-align: center;
+    opacity: 0.8;
+    margin-bottom: 16px;
+}
+
+.container {
+   display: flex;
+    overflow-x: scroll;
+    gap: 28px;
+    padding: 16px;
+}
+.container::-webkit-scrollbar{
+    display: none;
+}
+
+.card {
+    min-width: 75%;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow:2px 2px 10px rgba(0, 0, 0, 0.15);
+    /* cer însorit: soare în colțul dreapta-sus, albastru care se deschide spre orizont */
+    background:
+        radial-gradient(circle at 88% 10%, #fff3c4 0 22px, rgb(255 252 240 / 0.55) 23px 50px, transparent 110px),
+        linear-gradient(to bottom, #8fbfe0 0%, #c4ddef 50%, #e9f1f4 78%);
+}
+
+/* asfalt în partea de jos, pe care stă utilajul */
+.card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 64px;
+    border-radius: 0 0 10px 10px;
+    background:
+        /* bordura drumului */
+        linear-gradient(#b9b4aa, #b9b4aa) top / 100% 4px no-repeat,
+        /* marcaj rutier întrerupt */
+        repeating-linear-gradient(90deg, rgb(243 240 233 / 0.85) 0 26px, transparent 26px 52px) 0 62% / 100% 3px no-repeat,
+        /* granulație de asfalt */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.1 0 0 0 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        #3f444a;
+    pointer-events: none;
+}
+
+/* cardurile cu poză au loc jos pentru imagine */
+.card:has(.image) {
+    min-height: 450px;
+}
+
+/* textul stă deasupra imaginii */
+.card > :not(.image) {
+    position: relative;
+    z-index: 1;
+}
+
+/* imaginea lipită de colțul stânga-jos */
+.image {
+    position: absolute;
+    left: 0;
+    bottom: 12px; /* roțile stau pe asfalt, nu pe marginea cardului */
+    width: 80%;
+    height: 55%;
+    object-fit: contain;
+    object-position: left bottom;
+    pointer-events: none;
+    overflow: visible; /* brațele și bena pot ieși din desen */
+    transform-origin: left bottom;
+    transition:
+        scale 0.9s cubic-bezier(0.45, 0, 0.2, 1),
+        transform 0.9s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+/* cardul activ stă peste vecini, ca utilajul să poată ieși din el */
+.card:hover {
+    z-index: 2;
+}
+
+
+
+/* ---- animații la hover pe card ---- */
+
+/* utilajele care se deplasează: înainte sau înapoi, cu distanța din --drive */
+.drive {
+    transition:
+        translate 0.9s cubic-bezier(0.45, 0, 0.2, 1),
+        scale 0.9s cubic-bezier(0.45, 0, 0.2, 1),
+        transform 0.9s cubic-bezier(0.45, 0, 0.2, 1);
+}
+/* distanța vine din EQUIPMENT (drive), negativ = mers înapoi */
+.card:hover .drive {
+    translate: var(--drive, 12px) 0;
+}
+
+/* brațe, cupe, bene, lame: se rotesc în jurul pivotului lor (--o) */
+.part {
+    transform-box: view-box;
+    transform-origin: var(--o);
+    transition: transform 0.9s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.card:hover .part {
+    transform: var(--hover);
+}
+
+/* valțul compactorului vibrează */
+.card:hover .vibrate {
+    animation: vibrate 0.09s linear infinite;
+}
+
+/* suspensia camioanelor */
+.card:hover .bob {
+    animation: bob 0.6s ease-in-out infinite alternate;
+}
+
+/* picătura din cisternă */
+.card:hover .drop {
+    animation: drop 0.9s ease-in-out infinite;
+}
+
+@keyframes vibrate {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, 1px); }
+}
+
+@keyframes bob {
+    to { transform: translateY(2px); }
+}
+
+@keyframes drop {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .part, .drive { transition: none; }
+    .image { transition: none; }
+    .card:hover .drive { translate: none; }
+    .card:hover .image { scale: none; transform: none; }
+    .card:hover .part,
+    .card:hover .vibrate,
+    .card:hover .bob,
+    .card:hover .drop {
+        transform: none;
+        animation: none;
+    }
+}
+
+.card h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 0px;
+    font-size: 20px;
+    color: black;;
+}
+
+.count {
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--secondary);
+}
+
+.card p {
+    line-height: 1.5;
+    opacity: 0.8;
+}

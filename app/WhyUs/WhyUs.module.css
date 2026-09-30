@@ -1,0 +1,164 @@
+.whyUs {
+    width: 94%;
+    margin: 96px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.whyUs h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2;
+    text-align: center;
+}
+.whyUs h2 strong {
+    color: var(--secondary);
+}
+
+/* bento: mobil 1 coloană, tabletă 2, desktop 4 (cardurile featured ocupă 2) */
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+@media (min-width: 640px) {
+    .container { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+    .container { grid-template-columns: repeat(4, 1fr); }
+    .featured { grid-column: span 2; }
+}
+
+.card {
+    --grid-line: color-mix(in srgb, var(--primary) 12%, transparent);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 32px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--primary) 6%, transparent);
+    transition:
+        transform 0.4s cubic-bezier(0.45, 0, 0.2, 1),
+        box-shadow 0.4s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--primary) 14%, transparent);
+}
+
+/* cardurile late: asfalt, text deschis */
+.featured {
+    --grid-line: rgb(255 255 255 / 0.08);
+    background: var(--primary);
+    color: #f3f0e9;
+}
+
+/* grid de planșă, estompat la 45°; devine mai vizibil la hover */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(45deg, #000 0%, transparent 70%);
+    opacity: 0.7;
+    transition: opacity 0.4s;
+}
+.card:hover::before {
+    opacity: 1;
+}
+
+.icon {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    width: 34px;
+    height: 34px;
+    color: var(--secondary);
+}
+
+/* poza din colțul dreapta-sus, estompată spre stânga și în jos */
+.photo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 60%;
+    height: 100%;
+    /* estompare pe diagonală: plin în colțul dreapta-sus, dispare spre stânga-jos,
+       fără muchii tăiate pe laturi */
+    mask-image:
+        linear-gradient(225deg, #000 20%, transparent 70%),
+        linear-gradient(to left, #000 65%, transparent 100%);
+    mask-composite: intersect;
+    opacity: 0.9;
+    transition: opacity 0.4s;
+}
+.photo img {
+    object-fit: cover;
+}
+.card:hover .photo {
+    opacity: 1;
+}
+
+.value {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: clamp(44px, 5vw, 64px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--secondary);
+    font-variant-numeric: tabular-nums;
+}
+.value small {
+    font-size: 0.4em;
+    font-weight: 700;
+}
+
+/* linie de cotă (din planșa Figma): se lungește la hover */
+.cota {
+    position: relative;
+    display: block;
+    width: 56px;
+    height: 2px;
+    margin: 4px 0 8px;
+    background: var(--secondary);
+    transition: width 0.5s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.cota::before,
+.cota::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    width: 2px;
+    height: 10px;
+    background: var(--secondary);
+}
+.cota::before { left: 0; }
+.cota::after { right: 0; }
+.card:hover .cota {
+    width: 120px;
+}
+
+.card h3 {
+    font-size: 20px;
+}
+
+.card p {
+    line-height: 1.5;
+    opacity: 0.8;
+    max-width: 520px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card, .cota, .card::before { transition: none; }
+    .card:hover { transform: none; }
+}

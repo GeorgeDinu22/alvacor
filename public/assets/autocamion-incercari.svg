@@ -1,0 +1,13 @@
+<svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M226 104H12V116H226V104Z" fill="#1D2125"/>
+<path d="M14 92H160V104H14V92Z" fill="#C99700"/>
+<path d="M22 62H66V92H22V62ZM70 62H114V92H70V62ZM118 62H156V92H118V62Z" fill="#B9B4AA"/>
+<path d="M44 38H90V62H44V38ZM94 38H140V62H94V38Z" fill="#9A958C"/>
+<path d="M166 56H204C210.7 56 214.7 59.3 216 66L224 104H166V56Z" fill="#F2B705"/>
+<path d="M174 62H202C206 62 208.3 64 209 68L213 86H174V62Z" fill="#2E5A78" fill-opacity="0.85"/>
+<path d="M228 96H220V108H228V96Z" fill="#1D2125"/>
+<circle cx="40" cy="128" r="16" fill="#1D2125"/><circle cx="40" cy="128" r="6" fill="#B9B4AA"/>
+<circle cx="76" cy="128" r="16" fill="#1D2125"/><circle cx="76" cy="128" r="6" fill="#B9B4AA"/>
+<circle cx="176" cy="128" r="16" fill="#1D2125"/><circle cx="176" cy="128" r="6" fill="#B9B4AA"/>
+<circle cx="208" cy="128" r="16" fill="#1D2125"/><circle cx="208" cy="128" r="6" fill="#B9B4AA"/>
+</svg>
