@@ -19,10 +19,7 @@ export default function MapSection() {
             <div className={styles.text}>
                 <h2 id="map-title">Suntem prezenți <strong>peste tot</strong></h2>
                 <p>
-                    Avem sediul în București, dar echipele și utilajele noastre proprii se mobilizează
-                    direct în șantier, oriunde în țară. Am executat lucrări în Argeș, Giurgiu, Vaslui,
-                    Botoșani, Neamț, Galați sau Mehedinți, așa că locația proiectului nu reprezintă
-                    o problemă pentru noi.
+                    Din București, direct oriunde în țară. Cu echipe și utilaje proprii, ajungem rapid pe orice șantier și transformăm proiectele în lucrări finalizate. De la Argeș și Giurgiu până la Vaslui, Galați sau Mehedinți, distanța nu ne oprește.
                 </p>
             </div>
 

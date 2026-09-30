@@ -8,7 +8,7 @@ const EQUIPMENT = [
         name: "Excavatoare pe șenile",
         description: "Săpături mecanizate și terasamente de volum mare.",
         machine: "excavator",
-        drive: 60,
+        drive: 32,
     },
     {
         count: 2,
