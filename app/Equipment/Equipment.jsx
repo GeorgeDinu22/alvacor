@@ -82,7 +82,7 @@ const EQUIPMENT = [
 
 export default function Equipment() {
     return(
-        <section className={styles.equipment} aria-labelledby="equipment-title">
+        <section id="utilaje" className={styles.equipment} aria-labelledby="equipment-title">
             <h2 id="equipment-title">Parcul nostru de <strong>utilaje</strong></h2>
             <p className={styles.intro}>
                 22 de utilaje și autovehicule proprii, întreținute și operate de echipa noastră.

@@ -26,14 +26,16 @@
    display: flex;
     overflow-x: scroll;
     gap: 28px;
-    padding: 16px;
+    padding: 16px 0;
+    scroll-snap-type:x mandatory;
 }
 .container::-webkit-scrollbar{
     display: none;
 }
 
 .card {
-    min-width: 90%;
+    scroll-snap-align: center;
+    min-width: 85%;
     position: relative;
 
     display: flex;

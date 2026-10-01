@@ -1,6 +1,6 @@
 .map {
     width: 94%;
-    margin: 96px auto;
+    margin: 24px auto 40px;
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
@@ -29,6 +29,7 @@
 .text h2 {
     font-size: clamp(28px, 4vw, 44px);
     line-height: 1.2;
+    width: 90%;
 }
 .text h2 strong {
     color: var(--secondary);

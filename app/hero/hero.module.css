@@ -1,6 +1,6 @@
 .hero {
     width: 94%;
-    height: 94vh;
+    height: 84vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,10 +39,10 @@
 }
 .containerHero h1{
     line-height: 1.2;
-    max-width: 750px;
+    width: 94%;
 }
 .containerHero p{
-    max-width: 720px;
+    width: 90%;
     line-height: 1.5;  
     font-weight: 550;
     opacity: 0.9; 
@@ -77,7 +77,7 @@
 /* utilajele intră din dreapta, jos */
 .machines{
     position: absolute;
-    right: 4%;
+    right: 0%;
     bottom: 0;
     display: flex;
     align-items: flex-end;
@@ -88,10 +88,10 @@
     width: clamp(110px, 14vw, 210px);
     height: auto;
     transform: scaleX(-1); /* SVG-urile privesc spre dreapta, le întoarcem spre stânga */
-    animation: driveIn 3.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    animation: driveIn 3.5s cubic-bezier(0.2, 0.7, 0.3, 1) both 0.75s;
 }
 .machine:nth-child(2){
-    animation-delay: 0.5s;
+    animation-delay: 1.25s;
 }
 
 @keyframes heroZoom{
@@ -100,7 +100,7 @@
 }
 
 @keyframes driveIn{
-    from { translate: 70vw 0; }
+    from { translate: 75vw 0; }
     to { translate: 0 0; }
 }
 

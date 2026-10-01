@@ -11,6 +11,7 @@ const DESKTOP_QUERY = "(min-width: 768px)";
 const links = [
     { href: "/", label: "Acasă" },
     { href: "/#de-ce-noi", label: "De ce noi" },
+    { href: "/portofoliu", label: "Portofoliu" },
 ];
 
 

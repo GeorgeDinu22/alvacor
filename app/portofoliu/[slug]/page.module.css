@@ -1,0 +1,124 @@
+/* Sub header-ul fix (72px + 12px de sus pe desktop) */
+.proiect {
+    width: 94%;
+    margin: 104px auto 40px;
+    padding: 32px 6%;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 900px) {
+    .proiect {
+        padding: 48px max(6%, calc((100% - 800px) / 2));
+    }
+}
+
+.inapoi {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: color 200ms ease, opacity 200ms ease;
+}
+.inapoi:hover {
+    color: var(--secondary);
+    opacity: 1;
+}
+.inapoi svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.proiect h1 {
+    margin-bottom: 24px;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.2;
+}
+
+.proiect h3 {
+    margin: 32px 0 12px;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.3;
+}
+
+.proiect p {
+    margin-bottom: 16px;
+    font-size: 17px;
+    line-height: 1.7;
+}
+.proiect p strong {
+    color: var(--secondary);
+}
+
+.imagine {
+    position: relative;
+    height: 300px;
+    margin: 24px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.imagine img {
+    object-fit: cover;
+}
+
+/* „Ți se pare că ne potrivim...” la finalul fiecărui proiect */
+.cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 94%;
+    margin: 0 auto 40px;
+    padding: 40px 24px;
+    border-radius: 20px;
+    background-color: var(--primary);
+    color: #fff;
+    text-align: center;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.cta p {
+    margin: 0;
+    font-size: clamp(20px, 2.6vw, 28px);
+    font-weight: 700;
+    line-height: 1.3;
+}
+.ctaButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    background-color: var(--secondary);
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 200ms ease;
+}
+.ctaButton:hover {
+    background-color: color-mix(in srgb, var(--secondary) 85%, #fff);
+}
+.ctaButton svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.inapoi:focus-visible,
+.ctaButton:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+}
