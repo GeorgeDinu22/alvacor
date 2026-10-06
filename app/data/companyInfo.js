@@ -10,4 +10,11 @@ export const companyInfo = {
     whatsapp: {
         href: "https://wa.me/40744638370",
     },
+    // Imaginea care apare când se dă share la link (WhatsApp, Facebook, LinkedIn): public/og-image.jpg
+    ogImage: {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ALVACOR – Construcții civile și infrastructură",
+    },
 };

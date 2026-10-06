@@ -20,9 +20,9 @@
     inset: 0;
     z-index: -1;
     background: linear-gradient(
-        to bottom,
-        color-mix(in srgb, var(--primary) 55%, transparent),
-        color-mix(in srgb, var(--primary) 85%, transparent)
+        to top,
+        rgba(0, 0, 0, 0.65),
+        transparent
     );
 }
 
@@ -56,6 +56,30 @@
     border-radius: 10px;
     text-decoration: none;
     transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+/* shine: o dungă de lumină traversează butonul la hover / focus */
+.containerHero a::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        100deg,
+        transparent,
+        rgba(255, 255, 255, 0.45),
+        transparent
+    );
+    translate: -120% 0;
+    pointer-events: none;
+}
+.containerHero a:hover::after,
+.containerHero a:focus-visible::after{
+    translate: 220% 0;
+    transition: translate 0.7s ease;
 }
 .bg{
     width: 100%;
@@ -65,7 +89,7 @@
     top: 0;
     left: 0;
     z-index: -1;
-    animation: heroZoom 0.75s ease-out both;
+    animation: heroZoom 2.25s ease-out both;
 }
 
 /* textul rămâne deasupra utilajelor */
@@ -74,38 +98,55 @@
     z-index: 1;
 }
 
-/* utilajele intră din dreapta, jos */
+/* utilajele intră jos, din părți opuse: excavatorul din stânga, basculanta din dreapta */
 .machines{
     position: absolute;
-    right: 0%;
+    left: 0;
+    right: 0;
     bottom: 0;
     display: flex;
     align-items: flex-end;
-    gap: 24px;
+    justify-content: space-between;
     pointer-events: none;
 }
 .machine{
     width: clamp(110px, 14vw, 210px);
     height: auto;
-    transform: scaleX(-1); /* SVG-urile privesc spre dreapta, le întoarcem spre stânga */
-    animation: driveIn 3.5s cubic-bezier(0.2, 0.7, 0.3, 1) both 0.75s;
 }
-.machine:nth-child(2){
-    animation-delay: 1.25s;
+/* SVG-urile privesc spre dreapta: excavatorul rămâne așa, basculanta e întoarsă spre stânga */
+.dinStanga{
+    animation: driveInStanga 2.5s cubic-bezier(0.2, 0.7, 0.3, 1) both 1s;
+}
+.dinDreapta{
+    transform: scaleX(-1);
+    animation: driveInDreapta 2.5s cubic-bezier(0.2, 0.7, 0.3, 1) both 0.5s;
 }
 
 @keyframes heroZoom{
     from { transform: scale(1); }
-    to { transform: scale(1.05); }
+    to { transform: scale(1.1); }
 }
 
-@keyframes driveIn{
-    from { translate: 75vw 0; }
-    to { translate: 0 0; }
+@keyframes driveInStanga{
+    from { translate: -45vw 0; }
+    to { translate: 0px 0; }
+}
+@keyframes driveInDreapta{
+    from { translate: 45vw 0; }
+    to { translate: -12px 0; }
+}
+
+@media(min-width:768px){
+    .hero{
+        margin-top: 100px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce){
     .bg, .machine{
         animation: none;
+    }
+    .containerHero a::after{
+        display: none;
     }
 }

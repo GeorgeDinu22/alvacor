@@ -93,8 +93,8 @@
     font-size: 12px;
     margin-top: 8px;
 }
-.bottom a {
-    color: var(--secondary);
+.bottom a { 
+    color: white;
     font-weight: 600;
     text-decoration: none;
 }

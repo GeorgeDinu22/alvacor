@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { proiecte, getProiect, getTitlu } from "../../data/portofoliu";
-import { companyInfo } from "../../data/companyInfo";
+import { proiecte, getProiect, getTitlu, getImagini, getDescriereSeo } from "../../data/portofoliu";
+import { SITE_URL, creeazaMetadata, JsonLd } from "../../data/seo";
+import CtaFinal from "../../CtaFinal/CtaFinal";
 import styles from "./page.module.css";
 
 export const dynamicParams = false;
@@ -16,9 +17,44 @@ export async function generateMetadata({ params }) {
     const proiect = getProiect(slug);
     if (!proiect) return {};
 
+    const [imagine] = getImagini(proiect);
+
+    return creeazaMetadata({
+        titlu: getTitlu(proiect),
+        descriere: getDescriereSeo(proiect),
+        cale: `/portofoliu/${proiect.slug}`,
+        imagine: imagine && { url: imagine.src, alt: imagine.alt },
+        tip: "article",
+    });
+}
+
+// Date structurate: pagina proiectului + firul Acasă › Portofoliu › proiect
+function proiectJsonLd(proiect) {
+    const url = `${SITE_URL}/portofoliu/${proiect.slug}`;
+    const titlu = getTitlu(proiect);
+
     return {
-        title: `${getTitlu(proiect)} – ALVACOR`,
-        description: proiect.descriere,
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Article",
+                headline: titlu,
+                description: getDescriereSeo(proiect),
+                image: getImagini(proiect).map((imagine) => imagine.src),
+                mainEntityOfPage: url,
+                inLanguage: "ro",
+                author: { "@id": `${SITE_URL}/#firma` },
+                publisher: { "@id": `${SITE_URL}/#firma` },
+            },
+            {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Acasă", item: SITE_URL },
+                    { "@type": "ListItem", position: 2, name: "Portofoliu", item: `${SITE_URL}/portofoliu` },
+                    { "@type": "ListItem", position: 3, name: titlu, item: url },
+                ],
+            },
+        ],
     };
 }
 
@@ -47,7 +83,7 @@ function Bloc({ bloc }) {
         case "imagine":
             return (
                 <figure className={styles.imagine}>
-                    <Image src={bloc.src} alt={bloc.alt} fill sizes="(min-width: 900px) 800px, 94vw" />
+                    <Image src={bloc.src} alt={bloc.alt} fill sizes="(min-width: 600px) 550px, 94vw" />
                 </figure>
             );
         default:
@@ -75,12 +111,8 @@ export default async function ProiectPage({ params }) {
                 ))}
             </article>
 
-            <aside className={styles.cta} aria-labelledby="cta-title">
-                <p id="cta-title">Ți se pare că ne potrivim proiectului tău?</p>
-                <a href={companyInfo.telefon.href} className={styles.ctaButton}>
-                    Contactează-ne acum
-                </a>
-            </aside>
+            <CtaFinal />
+            <JsonLd date={proiectJsonLd(proiect)} />
         </>
     );
 }

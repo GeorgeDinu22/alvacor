@@ -32,6 +32,60 @@
 .container::-webkit-scrollbar{
     display: none;
 }
+.container {
+    scrollbar-width: none;
+}
+.container:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 4px;
+    border-radius: 10px;
+}
+
+/* butoanele ‹ › de sub carduri (Carousel.jsx) */
+.carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.controls {
+    display: none;
+    justify-content: center;
+    gap: 12px;
+}
+.controls button {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--secondary);
+    cursor: pointer;
+    transition: background 0.25s, opacity 0.25s;
+}
+.controls button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--primary) 85%, var(--secondary));
+}
+.controls button:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+.controls button:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 3px;
+}
+.controls svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 
 .card {
     scroll-snap-align: center;
@@ -70,6 +124,41 @@
     pointer-events: none;
 }
 
+/* Tabletă: 2 carduri pe rând, derulare orizontală cu butoane */
+@media (min-width: 640px) {
+    .container {
+        gap: 24px;
+    }
+    .card {
+        min-width: 0;
+        flex: 0 0 calc((100% - 24px) / 2);
+        scroll-snap-align: start;
+    }
+    .controls {
+        display: flex;
+    }
+}
+/* Ecrane mari: grilă fără scroll orizontal (3 coloane, apoi 4), fără butoane */
+@media (min-width: 1024px) {
+    .container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        overflow: visible;
+        scroll-snap-type: none;
+    }
+    .card {
+        flex: none;
+    }
+    .controls {
+        display: none;
+    }
+}
+@media (min-width: 1440px) {
+    .container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 /* cardurile cu poză au loc jos pentru imagine */
 .card:has(.image) {
     min-height: 450px;
@@ -99,13 +188,13 @@
 }
 
 /* cardul activ stă peste vecini, ca utilajul să poată ieși din el */
-.card:hover {
+.card:is(:hover, [data-activ]) {
     z-index: 2;
 }
 
-
-
-/* ---- animații la hover pe card ---- */
+/* ---- animații la hover pe card ----
+   „Activ” = hover pe desktop sau data-activ pe touch (cardul din centru, pus de Carousel.jsx).
+   Fiecare utilaj are mișcarea lui; durata ciclului e aceeași pentru toate piesele unui utilaj. */
 
 /* utilajele care se deplasează: înainte sau înapoi, cu distanța din --drive */
 .drive {
@@ -115,7 +204,7 @@
         transform 0.9s cubic-bezier(0.45, 0, 0.2, 1);
 }
 /* distanța vine din EQUIPMENT (drive), negativ = mers înapoi */
-.card:hover .drive {
+.card:is(:hover, [data-activ]) .drive {
     translate: var(--drive, 12px) 0;
 }
 
@@ -125,52 +214,310 @@
     transform-origin: var(--o);
     transition: transform 0.9s cubic-bezier(0.45, 0, 0.2, 1);
 }
-.card:hover .part {
+.card:is(:hover, [data-activ]) .part {
     transform: var(--hover);
 }
 
-/* valțul compactorului vibrează */
-.card:hover .vibrate {
+/* tot ce se rotește sau se scalează în jurul unui punct propriu */
+.roata, .fum, .semnal, .unda, .gramada, .grinda, .ac, .pivotare {
+    transform-box: view-box;
+    transform-origin: var(--o);
+}
+
+/* roțile se învârt cât merge utilajul, șenilele „curg” */
+.roata {
+    transition: rotate 0.9s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.card:is(:hover, [data-activ]) .drive .roata {
+    rotate: var(--rotire, 0deg);
+}
+.senila {
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.card:is(:hover, [data-activ]) .drive .senila {
+    stroke-dashoffset: calc(var(--drive, 0px) * -1);
+}
+
+/* material care cade (pământ, pietriș, apă): .flux decide când se vede, .cade e căderea în buclă */
+.flux {
+    opacity: 0;
+}
+.card:is(:hover, [data-activ]) .cade {
+    animation: cade 0.5s linear infinite;
+    animation-delay: calc(var(--i) * -0.11s);
+}
+@keyframes cade {
+    from { translate: 0 0; opacity: 1; }
+    to { translate: var(--dx, 0px) var(--h, 40px); opacity: 0.2; }
+}
+
+/* fum din eșapament */
+.fum {
+    opacity: 0;
+}
+.card:is(:hover, [data-activ]) .fum {
+    animation: fum 1.2s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.4s);
+}
+@keyframes fum {
+    0% { opacity: 0; translate: 0 0; scale: 0.5; }
+    20% { opacity: 0.7; }
+    100% { opacity: 0; translate: -10px -28px; scale: 2; }
+}
+
+/* girofar */
+.girofar {
+    opacity: 0;
+}
+.card:is(:hover, [data-activ]) .girofar {
+    animation: girofar 0.7s ease-in-out infinite;
+}
+@keyframes girofar {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.55; }
+}
+
+/* 1. Excavator pe șenile: ciclu de săpare (coboară, umple cupa, ridică, descarcă) */
+.card:is(:hover, [data-activ]) .sapaBrat { animation: sapaBrat 2.4s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .sapaBalansier { animation: sapaBalansier 2.4s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .sapaCupa { animation: sapaCupa 2.4s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .fluxExcavator { animation: fluxExcavator 2.4s linear infinite; }
+@keyframes sapaBrat {
+    0%, 100% { transform: rotate(0); }
+    20%, 45% { transform: rotate(7deg); }
+    70%, 90% { transform: rotate(-12deg); }
+}
+@keyframes sapaBalansier {
+    0%, 100% { transform: rotate(0); }
+    20% { transform: rotate(-16deg); }
+    45% { transform: rotate(18deg); }
+    70% { transform: rotate(6deg); }
+    90% { transform: rotate(-4deg); }
+}
+@keyframes sapaCupa {
+    0%, 100% { transform: rotate(0); }
+    20% { transform: rotate(25deg); }
+    45%, 82% { transform: rotate(-60deg); }
+    92% { transform: rotate(30deg); }
+}
+@keyframes fluxExcavator {
+    0%, 85% { opacity: 0; }
+    88%, 97% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 2. Excavator pe pneuri: partea de sus se rotește o jumătate de tură și înapoi */
+.card:is(:hover, [data-activ]) .pivotare { animation: pivotare 3.2s ease-in-out infinite; }
+@keyframes pivotare {
+    0%, 12%, 88%, 100% { scale: 1 1; }
+    38%, 62% { scale: -1 1; }
+}
+
+/* 3. Buldoexcavator: încărcătorul din față se ridică, apoi brațul din spate sapă */
+.card:is(:hover, [data-activ]) .bkIncarcator { animation: bkIncarcator 3.2s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .bkCupaFata { animation: bkCupaFata 3.2s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .bkBrat { animation: bkBrat 3.2s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .bkCupa { animation: bkCupa 3.2s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .fluxBuldoexcavator { animation: fluxBuldoexcavator 3.2s linear infinite; }
+@keyframes bkIncarcator {
+    0%, 55%, 100% { transform: rotate(0); }
+    15%, 42% { transform: rotate(-16deg); }
+}
+@keyframes bkCupaFata {
+    0%, 55%, 100% { transform: rotate(0); }
+    15%, 42% { transform: rotate(16deg); }
+}
+@keyframes bkBrat {
+    0%, 50%, 94%, 100% { transform: rotate(0); }
+    65% { transform: rotate(18deg); }
+    80% { transform: rotate(-8deg); }
+}
+@keyframes bkCupa {
+    0%, 50%, 92%, 100% { transform: rotate(0); }
+    65% { transform: rotate(55deg); }
+    80% { transform: rotate(-25deg); }
+}
+@keyframes fluxBuldoexcavator {
+    0%, 77% { opacity: 0; }
+    80%, 90% { opacity: 1; }
+    93%, 100% { opacity: 0; }
+}
+
+/* 4. Miniexcavator: sapă repede, stropește cu pământ și țopăie */
+.card:is(:hover, [data-activ]) .saltaret { animation: saltaret 0.5s ease-in-out infinite alternate; }
+.card:is(:hover, [data-activ]) .miniBrat { animation: miniBrat 1s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .miniCupa { animation: miniCupa 1s ease-in-out infinite; }
+.strop {
+    opacity: 0;
+}
+.card:is(:hover, [data-activ]) .strop {
+    animation: strop 1s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.05s);
+}
+@keyframes saltaret {
+    to { translate: 0 -3px; }
+}
+@keyframes miniBrat {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(-20deg); }
+}
+@keyframes miniCupa {
+    0%, 100% { transform: rotate(0); }
+    35% { transform: rotate(-65deg); }
+    70% { transform: rotate(25deg); }
+}
+@keyframes strop {
+    0%, 55% { opacity: 0; translate: 0 0; }
+    60% { opacity: 1; }
+    80% { translate: var(--dx) -14px; }
+    100% { opacity: 0; translate: calc(var(--dx) * 1.5) 8px; }
+}
+
+/* 5. Autogreder: undele GPS pulsează deasupra catargelor */
+.semnal {
+    opacity: 0;
+}
+.card:is(:hover, [data-activ]) .semnal {
+    animation: semnal 1.4s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.35s);
+}
+@keyframes semnal {
+    0% { opacity: 0; scale: 0.7; }
+    30% { opacity: 1; }
+    100% { opacity: 0; scale: 1.3; }
+}
+
+/* 6. Buldozer: grămada de pământ crește în fața lamei pe măsură ce împinge */
+.gramada {
+    scale: 0;
+    transition: scale 1.1s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.card:is(:hover, [data-activ]) .gramada {
+    scale: 1;
+}
+
+/* 7. Compactor: valțul vibrează, unde de compactare în asfalt */
+.card:is(:hover, [data-activ]) .vibrate {
     animation: vibrate 0.09s linear infinite;
 }
-
-/* suspensia camioanelor */
-.card:hover .bob {
-    animation: bob 0.6s ease-in-out infinite alternate;
+.unda,
+.vibratie {
+    opacity: 0;
 }
-
-/* picătura din cisternă */
-.card:hover .drop {
-    animation: drop 0.9s ease-in-out infinite;
+.card:is(:hover, [data-activ]) .unda {
+    animation: unda 0.9s ease-out infinite;
+    animation-delay: calc(var(--i) * 0.3s);
 }
-
+.card:is(:hover, [data-activ]) .vibratie {
+    animation: vibratie 0.16s steps(2) infinite;
+}
 @keyframes vibrate {
     0%, 100% { transform: translate(0, 0); }
     25% { transform: translate(1px, -1px); }
     75% { transform: translate(-1px, 1px); }
 }
+@keyframes unda {
+    0% { opacity: 0.9; scale: 0.5 1; }
+    100% { opacity: 0; scale: 3 1.6; }
+}
+@keyframes vibratie {
+    from { opacity: 0.8; translate: 0 0; }
+    to { opacity: 0.3; translate: 2px 0; }
+}
 
+/* 8. Încărcător frontal: ridică cupa plină, o răstoarnă, pietrișul cade */
+.card:is(:hover, [data-activ]) .incBrat { animation: incBrat 2.8s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .incCupa { animation: incCupa 2.8s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .incIncarcatura { animation: incIncarcatura 2.8s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .fluxIncarcator { animation: fluxIncarcator 2.8s linear infinite; }
+@keyframes incBrat {
+    0%, 100% { transform: rotate(0); }
+    35%, 75% { transform: rotate(-32deg); }
+}
+@keyframes incCupa {
+    0%, 92%, 100% { transform: rotate(0); }
+    30%, 50% { transform: rotate(-10deg); }
+    62%, 76% { transform: rotate(60deg); }
+}
+@keyframes incIncarcatura {
+    0%, 55% { opacity: 1; translate: 0 0; }
+    64%, 96% { opacity: 0; translate: 6px 6px; }
+    100% { opacity: 1; translate: 0 0; }
+}
+@keyframes fluxIncarcator {
+    0%, 57% { opacity: 0; }
+    60%, 78% { opacity: 1; }
+    82%, 100% { opacity: 0; }
+}
+
+/* 9. Autobasculantă: bena se ridică, pământul curge pe la spate */
+.card:is(:hover, [data-activ]) .bena { animation: bena 3.2s ease-in-out infinite; }
+.card:is(:hover, [data-activ]) .fluxBasculanta { animation: fluxBasculanta 3.2s linear infinite; }
+@keyframes bena {
+    0%, 100% { transform: rotate(0); }
+    25%, 65% { transform: rotate(-26deg); }
+    90% { transform: rotate(0); }
+}
+@keyframes fluxBasculanta {
+    0%, 28% { opacity: 0; }
+    32%, 58% { opacity: 1; }
+    64%, 100% { opacity: 0; }
+}
+
+/* 10. Cisternă: stropește continuu, drumul se udă */
+.card:is(:hover, [data-activ]) .fluxApa {
+    opacity: 1;
+}
+.balta {
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+.card:is(:hover, [data-activ]) .balta {
+    opacity: 0.45;
+}
+
+/* 9–11. suspensia camioanelor, picătura din cisternă */
+.card:is(:hover, [data-activ]) .bob {
+    animation: bob 0.6s ease-in-out infinite alternate;
+}
+.card:is(:hover, [data-activ]) .drop {
+    animation: drop 0.9s ease-in-out infinite;
+}
 @keyframes bob {
     to { transform: translateY(2px); }
 }
-
 @keyframes drop {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
 }
 
+/* 11. Autocamion pentru încercări: grinda Benkelman se încovoaie, acul ceasului oscilează */
+.card:is(:hover, [data-activ]) .grinda {
+    animation: grinda 0.6s ease-in-out infinite alternate;
+}
+.card:is(:hover, [data-activ]) .ac {
+    animation: ac 0.6s ease-in-out infinite alternate;
+}
+@keyframes grinda {
+    from { rotate: 0deg; }
+    to { rotate: -1.5deg; }
+}
+@keyframes ac {
+    from { rotate: -40deg; }
+    to { rotate: 40deg; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .part, .drive { transition: none; }
-    .image { transition: none; }
-    .card:hover .drive { translate: none; }
-    .card:hover .image { scale: none; transform: none; }
-    .card:hover .part,
-    .card:hover .vibrate,
-    .card:hover .bob,
-    .card:hover .drop {
-        transform: none;
-        animation: none;
+    .image,
+    .image * {
+        animation: none !important;
+        transition: none !important;
     }
+    .card:is(:hover, [data-activ]) .drive { translate: none; }
+    .card:is(:hover, [data-activ]) .image { scale: none; transform: none; }
+    .card:is(:hover, [data-activ]) .part { transform: none; }
+    .card:is(:hover, [data-activ]) .drive .roata { rotate: none; }
+    .card:is(:hover, [data-activ]) .gramada { scale: 0; }
 }
 
 .card h3 {

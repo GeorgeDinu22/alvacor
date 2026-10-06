@@ -1,12 +1,7 @@
 import Link from "next/link";
 import { companyInfo } from "../data/companyInfo";
+import { navigare } from "../data/navigare";
 import styles from "./Footer.module.css";
-
-const links = [
-    { href: "/", label: "Acasă" },
-    { href: "/#utilaje", label: "Utilaje" },
-    { href: "/portofoliu", label: "Portofoliu" },
-];
 
 export default function Footer() {
     const an = new Date().getFullYear();
@@ -24,7 +19,7 @@ export default function Footer() {
                 <nav className={styles.column} aria-labelledby="footer-nav-title">
                     <h3 id="footer-nav-title">Navigare</h3>
                     <ul>
-                        {links.map((link) => (
+                        {navigare.map((link) => (
                             <li key={link.href}>
                                 <Link href={link.href}>{link.label}</Link>
                             </li>

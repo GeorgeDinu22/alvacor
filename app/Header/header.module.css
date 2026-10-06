@@ -5,20 +5,24 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 50;
-    display: flex;
+    /* rândul de sus (logo + butoane) are înălțime fixă; al doilea rând e meniul,
+       care se deschide din 0fr în 1fr, așa că header-ul însuși se extinde în jos */
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 54px 0fr;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    column-gap: 16px;
     width: 94%;
-    height: 64px;
     padding: 4px 8px 4px 16px;
     border-radius: 20px;
     color: var(--text);
     background-color: color-mix(in srgb, var(--primary) 35%, transparent);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: grid-template-rows 300ms ease;
+}
+.headerOpen{
+    grid-template-rows: 54px 1fr;
 }
 
 @supports not (backdrop-filter: blur(12px)){
@@ -281,12 +285,64 @@
     outline-color: var(--wa);
 }
 
+/* meniul din header (mobil): al doilea rând al header-ului, deschis din hamburger */
+.dropdown{
+    grid-column: 1 / -1;
+    /* întins pe rând (nu centrat ca restul header-ului), altfel în timpul animației
+       lista iese în sus peste logo */
+    align-self: stretch;
+    min-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: visibility 0s linear 300ms;
+}
+.dropdownOpen{
+    visibility: visible;
+    transition: visibility 0s linear 0s;
+}
+.dropdown ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+    padding: 8px 0 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    translate: 0 -6px;
+    transition: opacity 250ms ease, translate 250ms ease;
+}
+.dropdownOpen ul{
+    opacity: 1;
+    translate: 0 0;
+}
+.dropdown a{
+    display: block;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #fff;
+    transition: background-color 200ms ease, color 200ms ease;
+}
+.dropdown a:hover{
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--secondary);
+}
+.dropdown a:focus-visible{
+    outline: 2px solid var(--secondary);
+    outline-offset: -2px;
+}
+
 /* Desktop: trebuie să fie identic cu DESKTOP_QUERY din header.jsx */
 @media (min-width: 768px){
     .header{
         top: 12px;
-        height: 72px;
+        grid-template-columns: auto 1fr auto;
+        grid-template-rows: 54px;
         padding: 8px 12px 8px 24px;
+    }
+    .navDesktop{
+        justify-self: center;
     }
     .logo{
         font-size: 26px;
@@ -296,7 +352,8 @@
         display: flex;
     }
     .call,
-    .burger{
+    .burger,
+    .dropdown{
         display: none;
     }
 }
@@ -304,6 +361,9 @@
 @media (prefers-reduced-motion: reduce){
     .sidebar,
     .overlay,
+    .header,
+    .dropdown,
+    .dropdown ul,
     .burger span{
         transition-duration: 1ms;
     }

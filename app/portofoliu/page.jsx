@@ -2,13 +2,15 @@ import Observer from "../Observer/observer";
 import ProjectCard from "../Portfolio/ProjectCard";
 import portfolioStyles from "../Portfolio/Portfolio.module.css";
 import { proiecte } from "../data/portofoliu";
+import { creeazaMetadata } from "../data/seo";
 import styles from "./page.module.css";
 
-export const metadata = {
-    title: "Portofoliu lucrări – ALVACOR",
-    description:
-        "Lucrările ALVACOR: drumuri și poduri, terasamente, rețele de apă și canalizare, rețele electrice de înaltă tensiune.",
-};
+export const metadata = creeazaMetadata({
+    titlu: "Portofoliu lucrări de construcții și infrastructură",
+    descriere:
+        "Lucrări executate de ALVACOR: reabilitări de drumuri naționale și județene, poduri, terasamente, rețele de apă și canalizare, rețele electrice de înaltă tensiune.",
+    cale: "/portofoliu",
+});
 
 export default function PortofoliuPage() {
     return (

@@ -1,5 +1,5 @@
 import styles from "./Gallery.module.css";
-import CircularCarousel from "./CircularCarousel";
+import GalleryCarousel from "./GalleryCarousel";
 
 // Poze de TEST (aceleași ca în WhyUs / Portofoliu), fără licență verificată: de înlocuit cu poze din șantier.
 const PHOTOS = [
@@ -41,26 +41,13 @@ const PHOTOS = [
     },
 ];
 
-// panorama are nevoie de multe carduri ca să închidă inelul: până la poze proprii, lista se repetă
-const ITEMS = [...PHOTOS, ...PHOTOS];
-
 export default function Gallery() {
     return (
         <section className={styles.gallery} aria-labelledby="gallery-title">
 
             <div className={styles.stage}>
-                <CircularCarousel
-                    items={ITEMS}
-                    preset="panorama"
-                    intro="rise"
-                    cardWidth={300}
-                    aspectRatio={0.7}
-                    speed={6}
-                    captions
-                    tilt={0}
-                    perspective={100}
-                    fadeColor="#f3f0e9"
-                />
+                {/* numărul de poze din inel se adaptează la lățimea ecranului */}
+                <GalleryCarousel photos={PHOTOS} />
             </div>
         </section>
     );

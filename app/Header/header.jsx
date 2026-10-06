@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { companyInfo } from "../data/companyInfo";
+import { navigare } from "../data/navigare";
 import styles from "./header.module.css";
 
 // Trebuie să fie identic cu breakpoint-ul din header.module.css
@@ -10,6 +11,7 @@ const DESKTOP_QUERY = "(min-width: 768px)";
 
 const links = [
     { href: "/", label: "Acasă" },
+    { href: "/#servicii", label: "Servicii" },
     { href: "/#de-ce-noi", label: "De ce noi" },
     { href: "/portofoliu", label: "Portofoliu" },
 ];
@@ -19,12 +21,15 @@ const links = [
 export default function Header(){
     const [open, setOpen] = useState(false);
     const inchide = () => setOpen(false);
+    const headerRef = useRef(null);
 
     useEffect(() => {
         if(!open) return;
 
-        const anterior = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
+        // click oriunde în afara header-ului închide dropdown-ul
+        const inchideLaClickAfara = (eveniment) => {
+            if(!headerRef.current?.contains(eveniment.target)) setOpen(false);
+        }
 
         const inchideCuEscape = (eveniment) => {
             if(eveniment.key === "Escape") setOpen(false);
@@ -35,11 +40,12 @@ export default function Header(){
             if(eveniment.matches) setOpen(false);
         }
 
+        document.addEventListener("pointerdown", inchideLaClickAfara);
         window.addEventListener("keydown", inchideCuEscape);
         query.addEventListener("change", laSchimbare);
 
         return () => {
-            document.body.style.overflow = anterior;
+            document.removeEventListener("pointerdown", inchideLaClickAfara);
             window.removeEventListener("keydown", inchideCuEscape);
             query.removeEventListener("change", laSchimbare);
         }
@@ -47,7 +53,7 @@ export default function Header(){
 
     return(
         <>
-            <header className={styles.header}>
+            <header ref={headerRef} className={`${styles.header} ${open ? styles.headerOpen : ""}`}>
                 <Link href="/" className={styles.logo} onClick={inchide} aria-label={`${companyInfo.nume} – pagina principală`}>
                     {companyInfo.nume}
                 </Link>
@@ -67,13 +73,30 @@ export default function Header(){
                         onClick={() => setOpen((valoare) => !valoare)}
                         aria-label={open ? "Închide meniul" : "Deschide meniul"}
                         aria-expanded={open}
-                        aria-controls="sidebar-meniu"
+                        aria-controls="meniu-navigare"
                     >
                         <span></span>
                         <span></span>
                         <span></span>
                     </button>
                 </div>
+
+                {/* meniul pe mobil: header-ul se extinde în jos, cu linkurile din footer (secțiunea Navigare) */}
+                <nav
+                    id="meniu-navigare"
+                    className={`${styles.dropdown} ${open ? styles.dropdownOpen : ""}`}
+                    aria-label="Navigare"
+                >
+                    <ul>
+                        {navigare.map((link) => (
+                            <li key={link.href}>
+                                <Link href={link.href} onClick={inchide}>
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
             </header>
         </>
     )

@@ -19,7 +19,7 @@ export default function Hero(){
                 </Link>
             </div>
             <Image
-                src={"https://media.istockphoto.com/id/2117759132/photo/four-construction-workers-having-meeting.jpg?s=612x612&w=0&k=20&c=qLV__HuqWfnV9RWbXgzQDrYxsmQXbDRm4RO-RP9vEIs="}
+                src={"/hero.jpg"}
                 alt="Echipă de construcții la o ședință de coordonare pe șantier"
                 height={800}
                 width={1000}
@@ -27,8 +27,8 @@ export default function Hero(){
                 className={styles.bg}
             />
             <div className={styles.machines} aria-hidden="true">
-                <Image src="/assets/excavator.svg" alt="" width={240} height={160} className={styles.machine} />
-                <Image src="/assets/bascula.svg" alt="" width={240} height={160} className={styles.machine} />
+                <Image src="/assets/excavator.svg" alt="" width={240} height={160} className={`${styles.machine} ${styles.dinStanga}`} />
+                <Image src="/assets/bascula.svg" alt="" width={240} height={160} className={`${styles.machine} ${styles.dinDreapta}`} />
             </div>
         </section>
     )
